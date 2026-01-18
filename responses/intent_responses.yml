@@ -1,0 +1,19 @@
+pricing_inquiry:
+  messages:
+    - "Our pricing depends on usage and scale."
+    - "We offer flexible pricing plans."
+
+demo_request:
+  messages:
+    - "Sure, I can help schedule a demo."
+    - "A live walkthrough can be arranged."
+
+support_issue:
+  messages:
+    - "I'm sorry you're facing an issue."
+    - "Please describe the problem in detail."
+
+free_trial_request:
+  messages:
+    - "Yes, we offer a free trial. Would you like me to set it up?"
+    - "You can try our product with a free trial. Shall I proceed?"

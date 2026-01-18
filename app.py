@@ -1,107 +1,46 @@
-import json
-import numpy as np
-from flask import Flask, request, jsonify
+from ml_pipeline.orchestrator import chatbot_pipeline
+from ml_pipeline.response_resolver import ResponseResolver
+from utils.preprocess import preprocess_text
+import joblib
 from sentence_transformers import SentenceTransformer
 
-# =========================================================
-# CONFIG
-# =========================================================
-INTENTS_PATH = "intents.json"
-MODEL_NAME = "all-MiniLM-L6-v2"
-FALLBACK_THRESHOLD = 0.20
+# === LOAD MODELS ===
 
-# =========================================================
-# APP INIT
-# =========================================================
-app = Flask(__name__)
+# 1. Load SentenceTransformer
+semantic_model = SentenceTransformer("semantic_model/")
 
-print("🔄 Loading sentence embedding model...")
-model = SentenceTransformer(MODEL_NAME)
-print("✅ Model loaded")
+# 2. Load classifier
+classifier = joblib.load("model/svc_classifier.joblib")
 
-print("🔄 Loading intents...")
-with open(INTENTS_PATH, "r", encoding="utf-8") as f:
-    intents = json.load(f)
+# 3. Load response resolver
+resolver = ResponseResolver("responses/intent_responses.yml")
 
-print("🔄 Computing intent embeddings...")
-intent_embeddings = {}
+print("🤖 Chatbot is running (type 'exit' to quit)\n")
 
-for intent, examples in intents.items():
-    if not examples:
-        continue
+while True:
+    user_query = input("You: ").strip()
 
-    embeddings = model.encode(
-        examples,
-        normalize_embeddings=True
-    )
+    if user_query.lower() in ["exit", "quit"]:
+        print("Bot: Goodbye! 👋")
+        break
 
-    embeddings = np.asarray(embeddings)
+    try:
+        response = chatbot_pipeline(
+            query=user_query,
+            classifier=classifier,                       # ✅ correct argument
+            semantic_model=semantic_model,
+            preprocess_fn=preprocess_text,
+            response_resolver=resolver
+        )
 
-    # Ensure final shape is (384,)
-    if embeddings.ndim == 1:
-        intent_embeddings[intent] = embeddings.reshape(-1)
-    else:
-        intent_embeddings[intent] = embeddings.mean(axis=0).reshape(-1)
+        print("Bot Response:")
+        print(f"  reply            : {response.get('reply')}")
+        print(f"  intent           : {response.get('intent')}")
+        print(f"  predicted_intent : {response.get('predicted_intent')}")
+        print(f"  confidence       : {response.get('confidence')}")
+        print(f"  source           : {response.get('source')}")
+        print("-" * 50)
 
-print("✅ Intent embeddings ready")
-
-# =========================================================
-# UTILS
-# =========================================================
-def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
-    a = np.asarray(a).reshape(-1)
-    b = np.asarray(b).reshape(-1)
-    return float(np.dot(a, b))
-
-
-def predict_intent(text: str):
-    query_embedding = model.encode(
-        text,
-        normalize_embeddings=True
-    )
-    query_embedding = np.asarray(query_embedding).reshape(-1)
-
-    best_intent = "fallback"
-    best_score = 0.0
-
-    for intent, intent_emb in intent_embeddings.items():
-        score = cosine_similarity(query_embedding, intent_emb)
-        if score > best_score:
-            best_score = score
-            best_intent = intent
-
-    if best_score < FALLBACK_THRESHOLD:
-        return {
-            "intent": "fallback",
-            "confidence": round(best_score, 4)
-        }
-
-    return {
-        "intent": best_intent,
-        "confidence": round(best_score, 4)
-    }
-
-# =========================================================
-# ROUTES
-# =========================================================
-@app.route("/", methods=["GET"])
-def health():
-    return jsonify({"status": "ok"})
-
-
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.get_json(force=True)
-    text = data.get("text", "").strip()
-
-    if not text:
-        return jsonify({"error": "text is required"}), 400
-
-    result = predict_intent(text)
-    return jsonify(result)
-
-# =========================================================
-# MAIN
-# =========================================================
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    except Exception as e:
+        print("❌ Error:", e)
+        print("-" * 50)
