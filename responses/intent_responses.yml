@@ -1,19 +1,144 @@
 pricing_inquiry:
   messages:
-    - "Our pricing depends on usage and scale."
-    - "We offer flexible pricing plans."
+    - "Our pricing depends on usage and scale. We offer flexible plans to suit different business needs."
+    - "We offer several pricing tiers. Would you like details about our plans?"
+    - "Pricing varies based on your requirements. Let me connect you with our sales team."
+
+contact_sales:
+  messages:
+    - "I'll connect you with our sales team right away."
+    - "Our sales representatives are ready to assist you. How can they help?"
+    - "Let me schedule a call with our sales team for you."
 
 demo_request:
   messages:
-    - "Sure, I can help schedule a demo."
-    - "A live walkthrough can be arranged."
+    - "Sure, I can help schedule a demo. What day works best for you?"
+    - "A live walkthrough can be arranged. Let me get our demo specialist."
+    - "I'd be happy to set up a product demonstration for you."
 
-support_issue:
+service_overview:
   messages:
-    - "I'm sorry you're facing an issue."
-    - "Please describe the problem in detail."
+    - "We provide comprehensive solutions for businesses of all sizes."
+    - "Our services include sales, marketing, and customer support automation."
+    - "We offer integrated tools designed to streamline your business operations."
 
 free_trial_request:
   messages:
     - "Yes, we offer a free trial. Would you like me to set it up?"
     - "You can try our product with a free trial. Shall I proceed?"
+    - "Great choice! Let me get you started with our free trial."
+
+user_feedback:
+  messages:
+    - "Thank you for your feedback! We appreciate your input."
+    - "Your suggestion is valuable to us. We'll share it with our team."
+    - "We're always listening. Your feedback helps us improve."
+
+interview_process_details:
+  messages:
+    - "Our interview process typically includes screening, technical, and final rounds."
+    - "Here's what to expect: initial screening, assessments, and final interviews."
+    - "The interview process usually takes 2-3 weeks. Would you like specific details?"
+
+application_status_guidance:
+  messages:
+    - "You can check your application status on our careers portal."
+    - "Please provide your application ID, and I'll look up your status."
+    - "Let me check the latest update on your application for you."
+
+offer_letter_information:
+  messages:
+    - "Congratulations on your offer! Your offer letter contains all employment details."
+    - "Your offer includes salary, benefits, and start date. Any questions?"
+    - "Please review your offer letter carefully. Our HR team is available if you need clarifications."
+
+partnership_inquiry:
+  messages:
+    - "We're interested in exploring partnership opportunities with you."
+    - "What type of partnership are you considering? Let's discuss possibilities."
+    - "Great! Let me connect you with our business development team."
+
+lead_qualification_signal:
+  messages:
+    - "Excellent! I can see you're ready to move forward. Let me schedule a next step."
+    - "Perfect timing! Let me get you in touch with the right person."
+    - "I'm excited about your interest. Our team will follow up shortly."
+
+fallback_unhandled:
+  messages:
+    - "I appreciate your question. Could you provide more details?"
+    - "I'm not quite sure I understood. Could you rephrase that?"
+    - "That's interesting. Can you give me more context?"
+    - "I want to help, but I need more information. Can you elaborate?"
+
+industry_use_case:
+  messages:
+    - "We have proven success in your industry. Let me share some examples."
+    - "Our solution addresses common challenges in your sector."
+    - "Which specific industry challenge are you trying to solve?"
+
+case_study_request:
+  messages:
+    - "We have excellent case studies showcasing our impact. What industry interests you?"
+    - "Let me share a relevant case study that demonstrates our results."
+    - "Our customers have achieved significant improvements. Would you like to see examples?"
+
+scalability_question:
+  messages:
+    - "Our platform is built to scale from startups to enterprises."
+    - "Scalability is a core feature. We can handle your growth seamlessly."
+    - "Our architecture supports unlimited growth. What's your scale requirement?"
+
+integration_capability:
+  messages:
+    - "We integrate with most major platforms and tools."
+    - "Our API is robust and well-documented for easy integration."
+    - "What systems do you need to integrate with? We likely support them."
+
+security_compliance:
+  messages:
+    - "We comply with all major security standards including ISO 27001 and GDPR."
+    - "Your data security is our top priority. We use enterprise-grade encryption."
+    - "We maintain the highest security certifications. Would you like our security documentation?"
+
+system_uptime_sla:
+  messages:
+    - "We guarantee 99.9% uptime with our enterprise SLA."
+    - "Our service reliability is backed by industry-leading SLAs."
+    - "We maintain exceptional uptime. Let me share our SLA details."
+
+technical_support_contact:
+  messages:
+    - "I'm sorry you're facing an issue. Please describe the problem in detail."
+    - "Our technical support team is here to help. What's the issue?"
+    - "Let me get you connected to our technical support specialists."
+
+business_hours_information:
+  messages:
+    - "Our business hours are Monday to Friday, 9 AM to 6 PM."
+    - "We're available during standard business hours for immediate assistance."
+    - "You can reach us anytime, but live support is available during office hours."
+
+office_location:
+  messages:
+    - "Our main office is located at [Company Address]. We also have regional offices."
+    - "You can visit us at our headquarters or connect virtually."
+    - "Our office locations are available on our contact page."
+
+job_openings_inquiry:
+  messages:
+    - "We currently have several exciting openings. What role interests you?"
+    - "Check our careers page for all available positions."
+    - "We're hiring! What type of role are you interested in?"
+
+job_application_process:
+  messages:
+    - "You can apply directly through our careers page by uploading your resume."
+    - "The application process is simple: select a position and submit your information."
+    - "Just fill out the application form with your details and we'll review it."
+
+internship_opportunities:
+  messages:
+    - "We offer internship programs for students and recent graduates."
+    - "Our internship program provides real-world experience and mentorship."
+    - "We have summer and year-round internship opportunities available."
