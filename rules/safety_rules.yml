@@ -1,0 +1,32 @@
+- intent: profanity
+  category: safety
+  priority: 0
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 50
+  description: "Abusive or profane language"
+  match:
+    regex:
+      - "\\b(fuck|shit|asshole|bitch|idiot)\\b"
+  response:
+    type: static
+    messages:
+      - "Let's keep the conversation respectful."
+      - "I'm here to help—please use appropriate language."
+
+- intent: negative_wording
+  category: safety
+  priority: 1
+  confidence: 0.9
+  allow_ml_fallback: true
+  max_tokens: 10
+  description: "Negative sentiment but non-abusive"
+  match:
+    regex:
+      - "not happy"
+      - "bad experience"
+      - "very disappointed"
+  response:
+    type: static
+    messages:
+      - "I'm sorry to hear that. Let me help resolve this."

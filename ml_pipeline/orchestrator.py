@@ -1,9 +1,20 @@
-from placeholders.rule_engine import rule_engine_placeholder
+from rule_engine.rule_pipeline import RulePipeline
 from placeholders.llm_engine import llm_placeholder
 from ml_pipeline.ml_engine import ml_predict
 from ml_pipeline.rope import rope_response
 
 CONFIDENCE_THRESHOLD = 0.20
+SOFT_CONFIDENCE_THRESHOLD = 0.15  
+
+# Initialize rule pipeline once
+rule_pipeline = RulePipeline(
+    rule_files=[
+        "rules/system_rules.yml",
+        "rules/safety_rules.yml",
+        "rules/static_info_rules.yml",
+        "rules/navigation_rules.yml"
+    ]
+)
 
 def chatbot_pipeline(
     query,
@@ -12,18 +23,19 @@ def chatbot_pipeline(
     preprocess_fn,
     response_resolver
 ):
-    # 1️⃣ Rule base placeholder
-    rule_result = rule_engine_placeholder(query)
-    if rule_result:
+    # 1️⃣ RULE ENGINE
+    rule_result = rule_pipeline.run(query)
+
+    if rule_result.get("matched") and not rule_result.get("allow_ml_fallback", True):
         return rope_response(
-            text=rule_result,
-            intent="system_intent",
+            text=rule_result["response"],
+            intent=rule_result["intent"],
             predicted_intent=None,
-            confidence=1.0,
+            confidence=rule_result["confidence"],
             source="RULE"
         )
 
-    # 2️⃣ ML prediction
+    # 2️⃣ ML INTENT PREDICTION
     predicted_intent, confidence = ml_predict(
         query,
         classifier,
@@ -31,10 +43,9 @@ def chatbot_pipeline(
         preprocess_fn
     )
 
-    # 3️⃣ ML response if confident and mapped
+    # 3️⃣ ML RESPONSE (confident & mapped)
     if confidence >= CONFIDENCE_THRESHOLD:
         response_text = response_resolver.resolve(predicted_intent)
-
         if response_text:
             return rope_response(
                 text=response_text,
@@ -44,12 +55,23 @@ def chatbot_pipeline(
                 source="ML"
             )
 
-    # 4️⃣ LLM fallback (BUT KEEP ML PREDICTION)
+    # 4️⃣ SOFT ML FALLBACK (NEW – UX FIX)
+    # Handles near-threshold predictions without jumping to LLM
+    if predicted_intent and confidence >= SOFT_CONFIDENCE_THRESHOLD:
+        return rope_response(
+            text="Could you please clarify a bit more so I can help you better?",
+            intent="clarification_needed",
+            predicted_intent=predicted_intent,
+            confidence=confidence,
+            source="ML"
+        )
+
+    # 5️⃣ LLM FALLBACK (LAST RESORT)
     llm_text = llm_placeholder(query)
     return rope_response(
         text=llm_text,
-        intent="unknown",                  # final intent unknown
-        predicted_intent=predicted_intent, # ✅ ML result preserved
+        intent="unknown",
+        predicted_intent=predicted_intent,
         confidence=confidence,
         source="LLM"
     )

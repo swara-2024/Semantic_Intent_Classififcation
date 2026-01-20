@@ -1,0 +1,66 @@
+- intent: business_hours_information
+  category: static
+  priority: 5
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 6
+  description: "Business operating hours"
+  match:
+    regex:
+      - "business hours"
+      - "working hours"
+      - "support timing"
+  response:
+    type: static
+    messages:
+      - "Our business hours are Monday to Friday, 9 AM to 5 PM IST."
+
+- intent: office_location
+  category: static
+  priority: 6
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 6
+  description: "Office address"
+  match:
+    regex:
+      - "office location"
+      - "company address"
+  response:
+    type: redirect
+    messages:
+      - "You can find our office address here:"
+    link: "https://company.com/contact"
+
+- intent: technical_support_contact
+  category: static
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 6
+  description: "Support contact details"
+  match:
+    regex:
+      - "support contact"
+      - "help desk"
+      - "customer support"
+  response:
+    type: static
+    messages:
+      - "You can contact support at support@company.com or call +91-XXXXXXXXXX."
+
+- intent: system_uptime_sla
+  category: static
+  priority: 8
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 6
+  description: "System uptime SLA"
+  match:
+    regex:
+      - "uptime"
+      - "sla"
+  response:
+    type: static
+    messages:
+      - "We guarantee 99.9% system uptime as per our SLA."

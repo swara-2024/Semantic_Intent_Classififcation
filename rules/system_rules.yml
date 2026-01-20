@@ -1,0 +1,55 @@
+- intent: greetings
+  category: system
+  priority: 1
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 2
+  description: "Short greeting-only inputs"
+  match:
+    regex:
+      - "^hi$"
+      - "^hello$"
+      - "^hey$"
+      - "^good (morning|afternoon|evening)$"
+  response:
+    type: static
+    messages:
+      - "Hello! How can I help you today?"
+      - "Hi there! What can I assist you with?"
+
+- intent: goodbyes
+  category: system
+  priority: 2
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 3
+  description: "Conversation closing"
+  match:
+    regex:
+      - "^bye$"
+      - "^goodbye$"
+      - "^see you$"
+      - "^thanks bye$"
+  response:
+    type: static
+    messages:
+      - "Goodbye! Have a great day ahead."
+      - "Thanks for chatting. Take care!"
+
+- intent: gratitude
+  category: system
+  priority: 3
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 3
+  description: "User appreciation"
+  match:
+    regex:
+      - "^thanks$"
+      - "^thank you$"
+      - "^thx$"
+  response:
+    type: static
+    messages:
+      - "You're welcome! 😊"
+      - "Happy to help!"

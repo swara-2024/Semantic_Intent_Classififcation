@@ -1,0 +1,51 @@
+- intent: sales_contact_request
+  category: navigation
+  priority: 4
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 4
+  description: "Direct sales contact request"
+  match:
+    regex:
+      - "^contact sales$"
+      - "^sales number$"
+      - "^talk to sales$"
+  response:
+    type: static
+    messages:
+      - "You can reach our sales team at sales@company.com."
+
+- intent: user_complaint
+  category: navigation
+  priority: 5
+  confidence: 0.95
+  allow_ml_fallback: true
+  max_tokens: 8
+  description: "User wants to raise a complaint"
+  match:
+    regex:
+      - "raise a complaint"
+      - "report an issue"
+      - "file a complaint"
+  response:
+    type: redirect
+    messages:
+      - "You can raise a complaint using the link below:"
+    link: "https://company.com/support"
+
+- intent: navigation
+  category: navigation
+  priority: 6
+  confidence: 0.9
+  allow_ml_fallback: true
+  max_tokens: 4
+  description: "Help or menu navigation"
+  match:
+    regex:
+      - "^help$"
+      - "^menu$"
+      - "^options$"
+  response:
+    type: static
+    messages:
+      - "I can help with pricing, demos, support, and general information."

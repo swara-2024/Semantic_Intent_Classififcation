@@ -4,30 +4,29 @@ from utils.preprocess import preprocess_text
 import joblib
 from sentence_transformers import SentenceTransformer
 
-# === LOAD MODELS ===
-
-# 1. Load SentenceTransformer
+# === LOAD MODELS ONCE ===
 semantic_model = SentenceTransformer("semantic_model/")
-
-# 2. Load classifier
 classifier = joblib.load("model/svc_classifier.joblib")
-
-# 3. Load response resolver
 resolver = ResponseResolver("responses/intent_responses.yml")
 
+print("Models loaded successfully.")
 print("Chatbot is running (type 'exit' to quit)\n")
 
 while True:
     user_query = input("You: ").strip()
 
+    if not user_query:
+        print("Bot: Please enter a message.")
+        continue
+
     if user_query.lower() in ["exit", "quit"]:
-        print("Bot: Goodbye! ")
+        print("Bot: Goodbye!")
         break
 
     try:
         response = chatbot_pipeline(
             query=user_query,
-            classifier=classifier,                       
+            classifier=classifier,
             semantic_model=semantic_model,
             preprocess_fn=preprocess_text,
             response_resolver=resolver
@@ -42,5 +41,5 @@ while True:
         print("-" * 50)
 
     except Exception as e:
-        print(" Error:", e)
+        print("Error:", e)
         print("-" * 50)
