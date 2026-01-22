@@ -23,7 +23,7 @@ def chatbot_pipeline(
     preprocess_fn,
     response_resolver
 ):
-    # 1️⃣ RULE ENGINE
+    #  RULE ENGINE
     rule_result = rule_pipeline.run(query)
 
     if rule_result.get("matched") and not rule_result.get("allow_ml_fallback", True):
@@ -35,7 +35,7 @@ def chatbot_pipeline(
             source="RULE"
         )
 
-    # 2️⃣ ML INTENT PREDICTION
+    #  ML INTENT PREDICTION
     predicted_intent, confidence = ml_predict(
         query,
         classifier,
@@ -43,7 +43,7 @@ def chatbot_pipeline(
         preprocess_fn
     )
 
-    # 3️⃣ ML RESPONSE (confident & mapped)
+    #  ML RESPONSE (confident & mapped)
     if confidence >= CONFIDENCE_THRESHOLD:
         response_text = response_resolver.resolve(predicted_intent)
         if response_text:
@@ -55,7 +55,7 @@ def chatbot_pipeline(
                 source="ML"
             )
 
-    # 4️⃣ SOFT ML FALLBACK (NEW – UX FIX)
+    #  SOFT ML FALLBACK (NEW – UX FIX)
     # Handles near-threshold predictions without jumping to LLM
     if predicted_intent and confidence >= SOFT_CONFIDENCE_THRESHOLD:
         return rope_response(

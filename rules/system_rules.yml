@@ -53,3 +53,55 @@
     messages:
       - "You're welcome! 😊"
       - "Happy to help!"
+- intent: bot_identity
+  category: system_identity
+  priority: 1
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 6
+  match:
+    regex:
+      - "what is your name"
+      - "your name"
+      - "who are you"
+      - "who r you"
+      - "are you a bot"
+      - "what are you"
+      - "introduce yourself"
+  response:
+    type: static
+    messages:
+      - "I'm your virtual assistant, here to help you with information and support."
+- intent: bot_capabilities
+  category: system_identity
+  priority: 2
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 8
+  match:
+    regex:
+      - "what can you do"
+      - "how can you help"
+      - "what do you help with"
+      - "what are your features"
+      - "what services do you provide"
+  response:
+    type: static
+    messages:
+      - "I can help with pricing, demos, support, company information, and general queries."
+- intent: help_menu
+  category: system_identity
+  priority: 3
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 3
+  match:
+    regex:
+      - "^help$"
+      - "^menu$"
+      - "options"
+      - "show menu"
+  response:
+    type: static
+    messages:
+      - "You can ask about pricing, demos, services, support, or careers."
