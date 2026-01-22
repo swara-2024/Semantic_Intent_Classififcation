@@ -9,8 +9,14 @@ class RuleEngine:
 
     def process(self, query: str) -> dict:
         matched_rules = []
+        token_count = len(query.strip().split())  # ✅ ADD THIS
 
         for rule in self.rules:
+            # ✅ ENFORCE max_tokens IF PRESENT
+            max_tokens = rule.get("max_tokens")
+            if max_tokens is not None and token_count > max_tokens:
+                continue
+
             if rule_matches(rule, query):
                 matched_rules.append(rule)
 

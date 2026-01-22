@@ -4,6 +4,7 @@ from rule_engine.rule_loader import load_rules
 from rule_engine.rule_engine import RuleEngine
 from rule_engine.query_analyzer import should_skip_rules
 
+
 class RulePipeline:
     def __init__(self, rule_files: list[str]):
         rules = load_rules(rule_files)

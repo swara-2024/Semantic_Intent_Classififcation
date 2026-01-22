@@ -85,6 +85,8 @@
       - "what do you help with"
       - "what are your features"
       - "what services do you provide"
+      - "what you do"
+      - "how can you hepl me"
   response:
     type: static
     messages:

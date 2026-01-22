@@ -12,7 +12,8 @@ rule_pipeline = RulePipeline(
         "rules/system_rules.yml",
         "rules/safety_rules.yml",
         "rules/static_info_rules.yml",
-        "rules/navigation_rules.yml"
+        "rules/navigation_rules.yml",
+        "rules/single_token_business_rules.yml",
     ]
 )
 

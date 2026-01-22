@@ -1,0 +1,254 @@
+# =========================
+# PRICING
+# =========================
+- intent: pricing_discovery
+  category: discovery
+  priority: 5
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(pricing|price|cost|charges|fees)$"
+  response:
+    type: static
+    messages:
+      - "Sure! What would you like to know about pricing? Plans, enterprise pricing, or discounts?"
+
+# =========================
+# DEMO
+# =========================
+- intent: demo_discovery
+  category: discovery
+  priority: 5
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(demo|demos|walkthrough)$"
+  response:
+    type: static
+    messages:
+      - "Would you like a live demo or a recorded walkthrough?"
+
+# =========================
+# SERVICES / PRODUCT
+# =========================
+- intent: service_discovery
+  category: discovery
+  priority: 6
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(service|services|product|platform|solution)$"
+  response:
+    type: static
+    messages:
+      - "What would you like to know about our services? Overview, features, or use cases?"
+
+# =========================
+# FREE TRIAL
+# =========================
+- intent: free_trial_discovery
+  category: discovery
+  priority: 6
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(trial|free|freemium)$"
+  response:
+    type: static
+    messages:
+      - "Are you interested in starting a free trial or learning how it works?"
+
+# =========================
+# CONTACT SALES
+# =========================
+- intent: contact_sales_discovery
+  category: discovery
+  priority: 6
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(sales|purchase|buy)$"
+  response:
+    type: static
+    messages:
+      - "Would you like to talk to sales about pricing, demos, or enterprise plans?"
+
+# =========================
+# PARTNERSHIP
+# =========================
+- intent: partnership_discovery
+  category: discovery
+  priority: 6
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(partner|partnership|collaboration)$"
+  response:
+    type: static
+    messages:
+      - "Are you interested in a technology, reseller, or strategic partnership?"
+
+# =========================
+# INDUSTRY USE CASE
+# =========================
+- intent: industry_use_case_discovery
+  category: discovery
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(industry|usecase|sector|vertical)$"
+  response:
+    type: static
+    messages:
+      - "Which industry are you interested in? Healthcare, banking, retail, or something else?"
+
+# =========================
+# CASE STUDY
+# =========================
+- intent: case_study_discovery
+  category: discovery
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(case|casestudy|examples|clients)$"
+  response:
+    type: static
+    messages:
+      - "Would you like to see customer success stories or industry case studies?"
+
+# =========================
+# SCALABILITY
+# =========================
+- intent: scalability_discovery
+  category: discovery
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(scale|scalability|growth)$"
+  response:
+    type: static
+    messages:
+      - "Are you asking about scaling for more users, higher traffic, or enterprise growth?"
+
+# =========================
+# INTEGRATION
+# =========================
+- intent: integration_discovery
+  category: discovery
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(integration|integrations|api|connect)$"
+  response:
+    type: static
+    messages:
+      - "Which system are you looking to integrate with? CRM, API, or internal tools?"
+
+# =========================
+# SECURITY / COMPLIANCE
+# =========================
+- intent: security_discovery
+  category: discovery
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(security|compliance|privacy|gdpr)$"
+  response:
+    type: static
+    messages:
+      - "Are you asking about data security, compliance certifications, or audits?"
+
+# =========================
+# UPTIME / SLA
+# =========================
+- intent: uptime_discovery
+  category: discovery
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(uptime|sla|availability)$"
+  response:
+    type: static
+    messages:
+      - "Would you like details about uptime guarantees or SLA commitments?"
+
+# =========================
+# SUPPORT
+# =========================
+- intent: support_discovery
+  category: discovery
+  priority: 7
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(support|help|issue|problem)$"
+  response:
+    type: static
+    messages:
+      - "Are you facing a technical issue, or do you want to contact support?"
+
+# =========================
+# CAREERS / JOBS / INTERNSHIP
+# =========================
+- intent: career_discovery
+  category: discovery
+  priority: 6
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(job|jobs|career|careers|intern|internship)$"
+  response:
+    type: static
+    messages:
+      - "Are you looking for job openings, internships, or application details?"
+
+# =========================
+# LEAD / ENTERPRISE SIGNAL
+# =========================
+- intent: lead_discovery
+  category: discovery
+  priority: 8
+  confidence: 1.0
+  allow_ml_fallback: false
+  max_tokens: 1
+  match:
+    regex:
+      - "^(enterprise|budget|purchase|decision)$"
+  response:
+    type: static
+    messages:
+      - "Are you exploring an enterprise solution or evaluating options for your team?"
