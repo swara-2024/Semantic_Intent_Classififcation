@@ -1,0 +1,7 @@
+FREE_TRIAL_FLOW = {
+    "steps": [
+        {"slot": "email", "question": "Please share your work email address."},
+        {"slot": "company", "question": "What company do you work for?"}
+    ],
+    "on_complete": "create_trial_account"
+}

@@ -1,0 +1,8 @@
+JOB_APPLICATION_FLOW = {
+    "steps": [
+        {"slot": "role", "question": "Which role are you applying for?"},
+        {"slot": "experience", "question": "How many years of experience do you have?"},
+        {"slot": "email", "question": "Please share your email address."}
+    ],
+    "on_complete": "submit_job_application"
+}

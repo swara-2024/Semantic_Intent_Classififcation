@@ -1,0 +1,8 @@
+DEMO_BOOKING_FLOW = {
+    "steps": [
+        {"slot": "name", "question": "May I have your name?"},
+        {"slot": "email", "question": "Please share your email address."},
+        {"slot": "preferred_time", "question": "What date and time works best for a demo?"}
+    ],
+    "on_complete": "schedule_demo"
+}

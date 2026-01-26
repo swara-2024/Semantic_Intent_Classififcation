@@ -1,0 +1,8 @@
+SALES_LEAD_FLOW = {
+    "steps": [
+        {"slot": "name", "question": "May I have your name?"},
+        {"slot": "email", "question": "Please share your email address."},
+        {"slot": "phone", "question": "Can you provide your phone number?"}
+    ],
+    "on_complete": "submit_sales_lead"
+}

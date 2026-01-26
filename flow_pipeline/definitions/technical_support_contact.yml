@@ -1,0 +1,8 @@
+SUPPORT_TICKET_FLOW = {
+    "steps": [
+        {"slot": "issue_summary", "question": "Please briefly describe the issue."},
+        {"slot": "urgency", "question": "Is this issue urgent? (yes/no)"},
+        {"slot": "email", "question": "Please share your email address so we can follow up."}
+    ],
+    "on_complete": "create_support_ticket"
+}
