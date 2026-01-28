@@ -1,7 +1,53 @@
-FREE_TRIAL_FLOW = {
-    "steps": [
-        {"slot": "email", "question": "Please share your work email address."},
-        {"slot": "company", "question": "What company do you work for?"}
-    ],
-    "on_complete": "create_trial_account"
-}
+steps:
+  - slot: full_name
+    question: "What is your full name?"
+    type: text
+    validation:
+      type: name
+    required: true
+  
+  - slot: email
+    question: "Please share your work email address."
+    type: text
+    validation:
+      type: email
+    required: true
+  
+  - slot: company
+    question: "What company do you work for?"
+    type: text
+    validation:
+      type: text
+      min_length: 2
+      max_length: 100
+    required: true
+  
+  - slot: industry
+    question: "What industry are you in?"
+    type: text
+    validation:
+      type: text
+      min_length: 3
+      max_length: 100
+    required: false
+  
+  - slot: team_size
+    question: "Approximately how many people are in your team?"
+    type: text
+    validation:
+      type: numeric
+      min_val: 1
+      max_val: 10000
+    required: true
+  
+  - slot: use_case
+    question: "What would you like to use the platform for?"
+    type: text
+    validation:
+      type: text
+      min_length: 10
+      max_length: 500
+    required: false
+
+on_complete: create_trial_account
+

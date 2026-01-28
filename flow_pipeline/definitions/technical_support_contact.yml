@@ -1,8 +1,67 @@
-SUPPORT_TICKET_FLOW = {
-    "steps": [
-        {"slot": "issue_summary", "question": "Please briefly describe the issue."},
-        {"slot": "urgency", "question": "Is this issue urgent? (yes/no)"},
-        {"slot": "email", "question": "Please share your email address so we can follow up."}
-    ],
-    "on_complete": "create_support_ticket"
-}
+steps:
+  - slot: name
+    question: "What is your name?"
+    type: text
+    validation:
+      type: name
+    required: true
+  
+  - slot: email
+    question: "Please share your email address so we can follow up."
+    type: text
+    validation:
+      type: email
+    required: true
+  
+  - slot: phone
+    question: "What is your phone number?"
+    type: text
+    validation:
+      type: phone
+    required: false
+  
+  - slot: account_id
+    question: "What is your account ID or customer number?"
+    type: text
+    validation:
+      type: text
+      min_length: 1
+      max_length: 100
+    required: false
+  
+  - slot: issue_category
+    question: "What is the nature of your issue? (e.g., 'Bug', 'Feature Request', 'Account', 'Performance')"
+    type: text
+    validation:
+      type: text
+      min_length: 3
+      max_length: 100
+    required: true
+  
+  - slot: issue_summary
+    question: "Please briefly describe the issue."
+    type: text
+    validation:
+      type: text
+      min_length: 10
+      max_length: 1000
+    required: true
+  
+  - slot: urgency
+    question: "How urgent is this issue? (Critical, High, Medium, Low)"
+    type: text
+    validation:
+      type: text
+    required: true
+  
+  - slot: steps_taken
+    question: "What troubleshooting steps have you already tried?"
+    type: text
+    validation:
+      type: text
+      min_length: 5
+      max_length: 500
+    required: false
+
+on_complete: create_support_ticket
+

@@ -1,8 +1,69 @@
-SALES_LEAD_FLOW = {
-    "steps": [
-        {"slot": "name", "question": "May I have your name?"},
-        {"slot": "email", "question": "Please share your email address."},
-        {"slot": "phone", "question": "Can you provide your phone number?"}
-    ],
-    "on_complete": "submit_sales_lead"
-}
+steps:
+  - slot: name
+    question: "May I have your name?"
+    type: text
+    validation:
+      type: name
+    required: true
+  
+  - slot: email
+    question: "Please share your email address."
+    type: text
+    validation:
+      type: email
+    required: true
+  
+  - slot: phone
+    question: "Can you provide your phone number?"
+    type: text
+    validation:
+      type: phone
+    required: true
+  
+  - slot: company
+    question: "What is your company name?"
+    type: text
+    validation:
+      type: text
+      min_length: 2
+      max_length: 100
+    required: true
+  
+  - slot: industry
+    question: "What industry is your company in?"
+    type: text
+    validation:
+      type: text
+      min_length: 3
+      max_length: 100
+    required: false
+  
+  - slot: budget
+    question: "What is your estimated budget range? (e.g., '$10k-$50k', 'Enterprise')"
+    type: text
+    validation:
+      type: text
+      min_length: 3
+      max_length: 100
+    required: true
+  
+  - slot: timeline
+    question: "When are you looking to implement a solution?"
+    type: text
+    validation:
+      type: text
+      min_length: 5
+      max_length: 100
+    required: true
+  
+  - slot: requirements
+    question: "What are your main requirements or pain points?"
+    type: text
+    validation:
+      type: text
+      min_length: 10
+      max_length: 500
+    required: true
+
+on_complete: submit_sales_lead
+

@@ -1,8 +1,48 @@
-DEMO_BOOKING_FLOW = {
-    "steps": [
-        {"slot": "name", "question": "May I have your name?"},
-        {"slot": "email", "question": "Please share your email address."},
-        {"slot": "preferred_time", "question": "What date and time works best for a demo?"}
-    ],
-    "on_complete": "schedule_demo"
-}
+steps:
+  - slot: name
+    question: "May I have your name?"
+    type: text
+    validation:
+      type: name
+    required: true
+  
+  - slot: email
+    question: "Please share your email address."
+    type: text
+    validation:
+      type: email
+    required: true
+  
+  - slot: company
+    question: "What company are you from?"
+    type: text
+    validation:
+      type: text
+      min_length: 2
+      max_length: 100
+    required: false
+  
+  - slot: preferred_date
+    question: "What date works best for a demo? (YYYY-MM-DD format)"
+    type: text
+    validation:
+      type: date
+    required: true
+  
+  - slot: preferred_time
+    question: "What time would you prefer? (HH:MM format, e.g., 14:30)"
+    type: text
+    validation:
+      type: time
+    required: true
+  
+  - slot: use_case
+    question: "Briefly describe your use case or what you'd like to explore in the demo."
+    type: text
+    validation:
+      type: text
+      min_length: 10
+      max_length: 500
+    required: false
+
+on_complete: schedule_demo

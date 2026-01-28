@@ -1,8 +1,66 @@
-JOB_APPLICATION_FLOW = {
-    "steps": [
-        {"slot": "role", "question": "Which role are you applying for?"},
-        {"slot": "experience", "question": "How many years of experience do you have?"},
-        {"slot": "email", "question": "Please share your email address."}
-    ],
-    "on_complete": "submit_job_application"
-}
+steps:
+  - slot: full_name
+    question: "What is your full name?"
+    type: text
+    validation:
+      type: name
+    required: true
+  
+  - slot: email
+    question: "Please provide your email address."
+    type: text
+    validation:
+      type: email
+    required: true
+  
+  - slot: phone
+    question: "What is your phone number?"
+    type: text
+    validation:
+      type: phone
+    required: true
+  
+  - slot: position
+    question: "What position are you applying for?"
+    type: text
+    validation:
+      type: text
+      min_length: 3
+      max_length: 100
+    required: true
+  
+  - slot: experience_years
+    question: "How many years of experience do you have in this field?"
+    type: text
+    validation:
+      type: numeric
+      min_val: 0
+      max_val: 70
+    required: true
+  
+  - slot: education
+    question: "What is your highest level of education?"
+    type: text
+    validation:
+      type: text
+      min_length: 5
+      max_length: 100
+    required: true
+  
+  - slot: resume_url
+    question: "Please provide a link to your resume (or paste content)."
+    type: text
+    validation:
+      type: text
+      min_length: 10
+      max_length: 2000
+    required: true
+  
+  - slot: availability
+    question: "When are you available to start?"
+    type: text
+    validation:
+      type: date
+    required: true
+
+on_complete: process_job_application

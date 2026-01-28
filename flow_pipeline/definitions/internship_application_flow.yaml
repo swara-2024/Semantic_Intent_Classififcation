@@ -1,8 +1,66 @@
-INTERNSHIP_APPLICATION_FLOW = {
-    "steps": [
-        {"slot": "college", "question": "Which college or university are you currently studying at?"},
-        {"slot": "year", "question": "Which year of study are you in?"},
-        {"slot": "email", "question": "Please share your email address."}
-    ],
-    "on_complete": "submit_internship_application"
-}
+steps:
+  - slot: full_name
+    question: "What is your full name?"
+    type: text
+    validation:
+      type: name
+    required: true
+  
+  - slot: email
+    question: "Please provide your email address."
+    type: text
+    validation:
+      type: email
+    required: true
+  
+  - slot: phone
+    question: "What is your phone number?"
+    type: text
+    validation:
+      type: phone
+    required: true
+  
+  - slot: college
+    question: "Which college or university are you currently studying at?"
+    type: text
+    validation:
+      type: text
+      min_length: 5
+      max_length: 150
+    required: true
+  
+  - slot: year
+    question: "Which year/semester of study are you in?"
+    type: text
+    validation:
+      type: text
+      min_length: 1
+      max_length: 50
+    required: true
+  
+  - slot: major
+    question: "What is your major/field of study?"
+    type: text
+    validation:
+      type: text
+      min_length: 3
+      max_length: 100
+    required: true
+  
+  - slot: start_date
+    question: "When can you start the internship? (YYYY-MM-DD)"
+    type: text
+    validation:
+      type: date
+    required: true
+  
+  - slot: duration
+    question: "How long can you commit to this internship? (e.g., '3 months', '6 months')"
+    type: text
+    validation:
+      type: text
+      min_length: 5
+      max_length: 50
+    required: true
+
+on_complete: process_internship_application
