@@ -1,45 +1,56 @@
+# app.py - Production API
+
+from flask import Flask, request, jsonify
 from ml_pipeline.orchestrator import chatbot_pipeline
 from ml_pipeline.response_resolver import ResponseResolver
 from utils.preprocess import preprocess_text
-from session.session_manager import SessionManager
 import joblib
 from sentence_transformers import SentenceTransformer
+from datetime import datetime
+import logging
 import uuid
 
-# === LOAD MODELS ===
+# -------------------- Setup --------------------
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+app = Flask(__name__)
+
+# -------------------- Load Models Once --------------------
 semantic_model = SentenceTransformer("semantic_model/")
 classifier = joblib.load("model/svc_classifier.joblib")
 resolver = ResponseResolver("responses/intent_responses.yml")
 
-# === SESSION MANAGER ===
-session_manager = SessionManager(session_timeout=600)
+logger.info("✓ Models loaded successfully")
 
-print("Chatbot is running (type 'exit' to quit)\n")
+# -------------------- Health --------------------
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat()
+    }), 200
 
-# Single-user CLI → one session_id
-session_id = str(uuid.uuid4())
-
-while True:
-    user_query = input("You: ").strip()
-
-    if user_query.lower() in ["exit", "quit"]:
-        print("Bot: Goodbye!")
-        break
-
+# -------------------- Chat Endpoint --------------------
+@app.route("/api/chat", methods=["POST"])
+def chat():
     try:
-        # Ensure session exists
-        session_manager.get_or_create_session(session_id)
+        data = request.get_json()
+        if not data or "query" not in data:
+            return jsonify({"success": False, "error": "Missing 'query'"}), 400
 
-        # Store USER message
-        session_manager.add_message(
-            session_id,
-            role="user",
-            text=user_query
-        )
+        query = data["query"].strip()
+        user_id = data.get("user_id")
 
-        # Run chatbot pipeline
-        response = chatbot_pipeline(
-            query=user_query,
+        if not query:
+            return jsonify({"success": False, "error": "Empty query"}), 400
+
+        #  Stable session_id
+        session_id = user_id or data.get("session_id") or str(uuid.uuid4())
+
+        #  SINGLE ENTRY POINT
+        bot_response = chatbot_pipeline(
+            query=query,
             classifier=classifier,
             semantic_model=semantic_model,
             preprocess_fn=preprocess_text,
@@ -47,26 +58,44 @@ while True:
             session_id=session_id
         )
 
-        #  Store BOT message
-        session_manager.add_message(
-            session_id,
-            role="bot",
-            text=response.get("reply"),
-            source=response.get("source")
-        )
-
-        # Print response
-        print("Bot Response:")
-        print(f"  reply            : {response.get('reply')}")
-        print(f"  intent           : {response.get('intent')}")
-        print(f"  predicted_intent : {response.get('predicted_intent')}")
-        print(f"  confidence       : {response.get('confidence')}")
-        print(f"  source           : {response.get('source')}")
-        print("-" * 50)
-
-        # OPTIONAL: print session history for debugging
-        # print("DEBUG HISTORY:", session_manager.get_history(session_id))
+        return jsonify({
+            "success": True,
+            "session_id": session_id,
+            "reply": bot_response["reply"],
+            "intent": bot_response["intent"],
+            "confidence": bot_response["confidence"],
+            "source": bot_response["source"]
+        }), 200
 
     except Exception as e:
-        print(" Error:", e)
-        print("-" * 50)
+        logger.exception("Chat error")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+# -------------------- Flow APIs --------------------
+@app.route("/api/flow/respond", methods=["POST"])
+def respond_flow():
+    data = request.get_json()
+    if not data or "session_id" not in data or "response" not in data:
+        return jsonify({"success": False, "error": "Missing fields"}), 400
+
+    return jsonify(
+        flow_handler.handle_response(
+            data["session_id"],
+            data["response"]
+        )
+    ), 200
+
+
+@app.route("/api/flow/cancel/<session_id>", methods=["POST"])
+def cancel_flow(session_id):
+    return jsonify(flow_handler.cancel_flow(session_id)), 200
+
+
+@app.route("/api/flow/session/<session_id>", methods=["GET"])
+def get_flow_session(session_id):
+    return jsonify(flow_handler.get_session_data(session_id)), 200
+
+
+# -------------------- Run --------------------
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=False)
