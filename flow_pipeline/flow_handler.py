@@ -1,10 +1,12 @@
 # flow_pipeline/flow_handler.py
 
 import time
+from flow_pipeline.post_flow_actions import handle_post_flow
 from flow_pipeline.flow_registry import flow_registry
 from flow_pipeline.flow_loader import validate_flow_structure
 from flow_pipeline.validators import SlotValidator
 from session.session_manager import SessionManager
+
 
 class FlowHandler:
     def __init__(self, session_manager: SessionManager):
@@ -67,8 +69,10 @@ class FlowHandler:
 
         if session["current_step"] >= len(steps):
             session["active_flow"] = None
-            session["last_completed_flow"] = intent   # ✅ KEY
+            session["last_completed_flow"] = intent   
             session["current_step"] = 0
+
+            handle_post_flow(intent, session["slots"])
 
             return {
                 "success": True,

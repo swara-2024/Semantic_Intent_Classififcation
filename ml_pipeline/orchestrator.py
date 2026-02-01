@@ -1,4 +1,4 @@
-# ml_pipeline/orchestrator.py
+import time
 
 from rule_engine.rule_pipeline import RulePipeline
 from placeholders.llm_engine import llm_placeholder
@@ -8,7 +8,12 @@ from session.session_manager import SessionManager
 from flow_pipeline.flow_handler import FlowHandler
 from flow_pipeline.flow_registry import flow_registry
 
+
+# -------------------- THRESHOLDS --------------------
 CONFIDENCE_THRESHOLD = 0.20
+FLOW_TRIGGER_THRESHOLD = 0.60
+FLOW_COOLDOWN_SECONDS = 180
+
 
 # -------------------- INITIALIZATION --------------------
 rule_pipeline = RulePipeline(
@@ -24,10 +29,12 @@ rule_pipeline = RulePipeline(
 session_manager = SessionManager(session_timeout=600)
 flow_handler = FlowHandler(session_manager)
 
+
 # -------------------- HELPER --------------------
 def log_turn(session_id, user_text, bot_text, source):
     session_manager.add_message(session_id, "user", user_text)
     session_manager.add_message(session_id, "bot", bot_text, source)
+
 
 # -------------------- MAIN PIPELINE --------------------
 def chatbot_pipeline(
@@ -55,9 +62,10 @@ def chatbot_pipeline(
 
         if normalized in ["yes", "yeah", "yep", "sure", "ok", "okay"]:
             flow_intent = session["pending_flow"]
-            session["pending_flow"] = None
 
             flow_start = flow_handler.start_flow(flow_intent, session_id)
+            session["pending_flow"] = None  # defensive clear
+
             log_turn(session_id, query, flow_start["reply"], "FLOW")
 
             return rope_response(
@@ -94,6 +102,10 @@ def chatbot_pipeline(
         flow_resp = flow_handler.handle_response(session_id, query)
         reply = flow_resp.get("reply", "")
 
+        # record completion timestamp to prevent re-trigger loop
+        if flow_resp.get("completed"):
+            session["flow_completed_at"] = time.time()
+
         log_turn(session_id, query, reply, "FLOW")
 
         return rope_response(
@@ -124,9 +136,18 @@ def chatbot_pipeline(
     )
     session_manager.update_intent(session_id, predicted_intent)
 
+    # -------------------- FLOW COOLDOWN CHECK --------------------
+    cooldown_ok = True
+    if session.get("flow_completed_at"):
+        cooldown_ok = (
+            time.time() - session["flow_completed_at"]
+        ) > FLOW_COOLDOWN_SECONDS
+
     # -------------------- FLOW CONSENT GATE --------------------
     if (
-        flow_registry.get_flow_for_intent(predicted_intent)
+        confidence >= FLOW_TRIGGER_THRESHOLD
+        and cooldown_ok
+        and flow_registry.get_flow_for_intent(predicted_intent)
         and session.get("last_completed_flow") != predicted_intent
     ):
         consent_msg = (

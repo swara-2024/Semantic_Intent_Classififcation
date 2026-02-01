@@ -1,0 +1,19 @@
+demo_request:
+  email: shwetanagapure1024@gmail.com
+  subject: "New Demo Request"
+
+pricing_inquiry:
+  email: sales@company.com
+  subject: "Pricing Inquiry Lead"
+
+job_application_process:
+  email: hr@company.com
+  subject: "New Job Application"
+
+internship_opportunities:
+  email: internship@company.com
+  subject: "Internship Interest"
+
+technical_support_contact:
+  email: support@company.com
+  subject: "Support Request"
