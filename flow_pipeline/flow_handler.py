@@ -25,7 +25,7 @@ class FlowHandler:
 
         session["active_flow"] = intent
         session["current_step"] = 0
-        session["slots"] = {}
+        session.setdefault("slots", {})   #  KEEP existing memory
         session["last_active"] = time.time()
 
         question = flow_def["steps"][0]["question"]
@@ -63,22 +63,26 @@ class FlowHandler:
             }
 
         if slot:
-            session["slots"][slot] = user_response
+            session["slots"][slot] = user_response   # ✅ unified memory
 
         session["current_step"] += 1
 
         if session["current_step"] >= len(steps):
             session["active_flow"] = None
-            session["last_completed_flow"] = intent   
+            session["last_completed_flow"] = intent
             session["current_step"] = 0
 
+            #  Send email / webhook / CRM
             handle_post_flow(intent, session["slots"])
 
             return {
                 "success": True,
                 "completed": True,
                 "intent": intent,
-                "reply": "Thank you! We have collected all the information. Our team will contact you shortly."
+                "reply": (
+                    "Thank you! We have collected all the information. "
+                    "Our team will contact you shortly."
+                )
             }
 
         return {
@@ -89,8 +93,10 @@ class FlowHandler:
 
     def cancel_flow(self, user_id: str):
         session = self.session_manager.get_or_create_session(user_id)
+
         session["active_flow"] = None
         session["pending_flow"] = None
         session["current_step"] = 0
-        session["slots"] = {}
+        # do NOT clear slots
+
         return {"success": True, "message": "Flow cancelled"}
